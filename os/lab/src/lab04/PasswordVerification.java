@@ -96,10 +96,10 @@ public class PasswordVerification {
     }
     
     private boolean checkDigits(String password) {
-        return digitCount(password) >= 2;
+        return countDights(password) >= 2;
     }
     
-    private int digitCount(String password) {
+    private int countDights(String password) {
         int count = 0;
         for (int i = 0; i < password.length(); i++) {
             count += (password.charAt(i) >= '0' && password.charAt(i) <= '9')
@@ -109,10 +109,10 @@ public class PasswordVerification {
     }
     
     private boolean checkUppercase(String password) {
-        return uppercaseCount(password) >= 2;
+        return countUppercases(password) >= 2;
     }
     
-    private int uppercaseCount(String password) {
+    private int countUppercases(String password) {
         int count = 0;
         for (int i = 0; i < password.length(); i++) {
             count += (password.charAt(i) >= 'A' && password.charAt(i) <= 'Z')
@@ -122,10 +122,10 @@ public class PasswordVerification {
     }
     
     private boolean checklowercase(String password) {
-        return lowercaseCount(password) >= 2;
+        return countLowercases(password) >= 2;
     }
     
-    private int lowercaseCount(String password) {
+    private int countLowercases(String password) {
         int count = 0;
         for (int i = 0; i < password.length(); i++) {
             count += (password.charAt(i) >= 'a' && password.charAt(i) <= 'z')
