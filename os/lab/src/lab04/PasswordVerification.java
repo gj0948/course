@@ -5,8 +5,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import lab04.validator.DigitsValidator;
+import lab04.validator.LengthValidator;
+import lab04.validator.LowerCaseValidator;
+import lab04.validator.PasswordValidator;
+import lab04.validator.SpaceValidator;
+import lab04.validator.SpecialCharacterValidator;
+import lab04.validator.SpecialNumberValidator;
+import lab04.validator.UpperCaseValidator;
 
 public class PasswordVerification {
     
@@ -21,138 +28,39 @@ public class PasswordVerification {
     };
     
     public static void main(String[] args) {
-        List<String> passwords = readPasswords();
-        PasswordVerification passwordVerification = new PasswordVerification();
-        for (int i = 0; i < passwords.size(); i++)
-            passwordVerification.validate(passwords.get(i));
+        final List<String> passwords = readPasswords();
+        final PasswordVerification passwordVerification = new PasswordVerification();
+        for (int i = 0; i < passwords.size(); i++) passwordVerification.validate(passwords.get(i));
     }
     
-    public void validate(String password) {
+    public void validate(final String password) {
         boolean wasSecure = true;
         boolean isSecure;
         
+        final PasswordValidator[] validators = new PasswordValidator[] {
+                new LengthValidator(), new SpaceValidator(), new DigitsValidator(), new UpperCaseValidator(),
+                new LowerCaseValidator(), new SpecialCharacterValidator(), new SpecialNumberValidator()
+        };
+        
         System.out.print("The password ¡°" + password + "¡±");
         
-        isSecure = checkLength(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[0]);
+        for (int i = 0; i < RULES.length; i++) {
+            isSecure = validators[i].validate(password);
+            if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
+            if (!isSecure) {
+                System.out.println(RULES[i]);
+                wasSecure = false;
+            }
         }
         
-        isSecure = checkSpace(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[1]);
-        }
-        
-        isSecure = checkDigits(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[2]);
-        }
-        
-        isSecure = checkUppercase(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[3]);
-        }
-        
-        isSecure = checklowercase(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[4]);
-        }
-        
-        isSecure = checkSpecialCharacters(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[5]);
-        }
-        
-        isSecure = checkSpecialNumbers(password);
-        if (!isSecure && wasSecure) System.out.println(" violates the following rule:");
-        if (!isSecure) {
-            wasSecure = false;
-            System.out.println(RULES[6]);
-        }
-
-        if (wasSecure)
-            System.out.println("\nCongratulations!  Your password ¡°" + password + "¡± is very secure!");
+        if (wasSecure) System.out.println("\nCongratulations!  Your password ¡°" + password + "¡± is very secure!");
         System.out.println();
     }
     
-    private boolean checkLength(String password) {
-        return password.length() >= 8 && password.length() <= 16;
-    }
-    
-    private boolean checkSpace(String password) {
-        return !password.contains(" ");
-    }
-    
-    private boolean checkDigits(String password) {
-        return countDights(password) >= 2;
-    }
-    
-    private int countDights(String password) {
-        int count = 0;
-        for (int i = 0; i < password.length(); i++) {
-            count += (password.charAt(i) >= '0' && password.charAt(i) <= '9')
-                    ? 1 : 0;
-        }
-        return count;
-    }
-    
-    private boolean checkUppercase(String password) {
-        return countUppercases(password) >= 2;
-    }
-    
-    private int countUppercases(String password) {
-        int count = 0;
-        for (int i = 0; i < password.length(); i++) {
-            count += (password.charAt(i) >= 'A' && password.charAt(i) <= 'Z')
-                    ? 1 : 0;
-        }
-        return count;
-    }
-    
-    private boolean checklowercase(String password) {
-        return countLowercases(password) >= 2;
-    }
-    
-    private int countLowercases(String password) {
-        int count = 0;
-        for (int i = 0; i < password.length(); i++) {
-            count += (password.charAt(i) >= 'a' && password.charAt(i) <= 'z')
-                    ? 1 : 0;
-        }
-        return count;
-    }
-    
-    private boolean checkSpecialNumbers(String password) {
-        final String[] SPECIAL_NUMBERS = new String[] {
-                "2017", "2016", "2015", "2014", "2013", "2012", "2011"
-        };
-        
-        for (int i = 0; i < SPECIAL_NUMBERS.length; i++) if (password.contains(SPECIAL_NUMBERS[i])) return false;
-        return true;
-    }
-    
-    private boolean checkSpecialCharacters(String password) {
-        String regex = "[$#@&*?!]";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.find();
-    }
     
     private static List<String> readPasswords() {
-        List<String> passwords = new ArrayList<>();
-        Scanner scanner;
+        final List<String> passwords = new ArrayList<>();
+        final Scanner scanner;
         try {
             scanner = new Scanner(new File("files/lab04_passwords"));
             while (scanner.hasNext()) passwords.add(scanner.nextLine());
@@ -162,4 +70,5 @@ public class PasswordVerification {
         }
         return passwords;
     }
+    
 }
