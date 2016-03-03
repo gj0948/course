@@ -1,7 +1,11 @@
 package lab04.validator;
 
 
-public class UpperCaseValidator implements PasswordValidator {
+public class UpperCaseRule extends Rule {
+
+    public UpperCaseRule() {
+        super("At least 2 upper-case letters ¨C The password must contain at least two upper-case letter.");
+    }
 
     @Override
     public boolean validate(final String password) {

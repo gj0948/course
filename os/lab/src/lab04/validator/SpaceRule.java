@@ -1,7 +1,11 @@
 package lab04.validator;
 
 
-public class SpaceValidator implements PasswordValidator {
+public class SpaceRule extends Rule {
+
+    public SpaceRule() {
+        super("No Space ¨C The password must not contain any space or blank character.");
+    }
 
     @Override
     public boolean validate(final String password) {

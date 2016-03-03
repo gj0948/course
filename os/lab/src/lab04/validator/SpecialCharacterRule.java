@@ -3,7 +3,11 @@ package lab04.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SpecialCharacterValidator implements PasswordValidator {
+public class SpecialCharacterRule extends Rule {
+
+    public SpecialCharacterRule() {
+        super("At least 1 special character ¨C The password must contain at least one special character, which can be one of the following 7 choices: ¡®$¡¯, ¡®#¡¯, ¡®@¡¯, ¡®&¡¯, ¡®*¡¯, ¡®?¡¯, or ¡®!¡¯.");
+    }
 
     @Override
     public boolean validate(final String password) {

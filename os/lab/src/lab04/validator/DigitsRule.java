@@ -1,7 +1,11 @@
 package lab04.validator;
 
 
-public class DigitsValidator implements PasswordValidator {
+public class DigitsRule extends Rule {
+
+    public DigitsRule() {
+        super("At least 2 digits ¨C The password must contain at least 2 digits.");
+    }
 
     @Override
     public boolean validate(final String password) {

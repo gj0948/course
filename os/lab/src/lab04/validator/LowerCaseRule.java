@@ -1,7 +1,11 @@
 package lab04.validator;
 
 
-public class LowerCaseValidator implements PasswordValidator {
+public class LowerCaseRule extends Rule {
+
+    public LowerCaseRule() {
+        super("At least 2 lower-case letter ¨C The password must contain at least two lower-case letter.");
+    }
 
     @Override
     public boolean validate(final String password) {
