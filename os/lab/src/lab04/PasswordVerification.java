@@ -27,10 +27,16 @@ public class PasswordVerification {
             new SpecialNumberRule(),
     };
     
-    public static void main(String[] args) {
-        final List<String> passwords = readPasswords();
-        final PasswordVerification passwordVerification = new PasswordVerification();
-        for (int i = 0; i < passwords.size(); i++) passwordVerification.validate(passwords.get(i));
+    private static List<String> readPasswords() {
+        final List<String> passwords = new ArrayList<>();
+        try {
+            final Scanner scanner = new Scanner(new File("files/lab04_passwords"));
+            while (scanner.hasNext()) passwords.add(scanner.nextLine());
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return passwords;
     }
     
     public void validate(final String password) {
@@ -52,17 +58,10 @@ public class PasswordVerification {
         System.out.println();
     }
     
-    
-    private static List<String> readPasswords() {
-        final List<String> passwords = new ArrayList<>();
-        try {
-            final Scanner scanner = new Scanner(new File("files/lab04_passwords"));
-            while (scanner.hasNext()) passwords.add(scanner.nextLine());
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return passwords;
+    public static void main(String[] args) {
+        final List<String> passwords = readPasswords();
+        final PasswordVerification passwordVerification = new PasswordVerification();
+        for (int i = 0; i < passwords.size(); i++) passwordVerification.validate(passwords.get(i));
     }
     
 }
