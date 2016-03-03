@@ -1,4 +1,4 @@
-package lab04.validator;
+package lab04.rule;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

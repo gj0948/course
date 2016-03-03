@@ -1,4 +1,4 @@
-package lab04.validator;
+package lab04.rule;
 
 public abstract class Rule implements PasswordValidator {
     private static final String RULE = "Rule ";

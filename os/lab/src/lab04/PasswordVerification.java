@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import lab04.validator.DigitsRule;
-import lab04.validator.LengthRule;
-import lab04.validator.LowerCaseRule;
-import lab04.validator.Rule;
-import lab04.validator.SpaceRule;
-import lab04.validator.SpecialCharacterRule;
-import lab04.validator.SpecialNumberRule;
-import lab04.validator.UpperCaseRule;
+import lab04.rule.DigitsRule;
+import lab04.rule.LengthRule;
+import lab04.rule.LowerCaseRule;
+import lab04.rule.Rule;
+import lab04.rule.SpaceRule;
+import lab04.rule.SpecialCharacterRule;
+import lab04.rule.SpecialNumberRule;
+import lab04.rule.UpperCaseRule;
 
 public class PasswordVerification {
     

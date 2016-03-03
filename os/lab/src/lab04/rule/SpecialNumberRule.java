@@ -1,4 +1,4 @@
-package lab04.validator;
+package lab04.rule;
 
 
 public class SpecialNumberRule extends Rule {
