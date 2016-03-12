@@ -1,0 +1,10 @@
+-help-
+
+help - To list all the available system commands with brief explanations.
+run - Run command is asking your program to execute all active processes one CPUtime.
+show pct - To show the complete contents of the process control table (PCT).
+show pit - To show the complete contents of the process instruction table (PIT).
+ps - To show the complete contents of PCT for only active processes.
+kill (PID) - To kill and terminate the process pid and all its threads at the same time.
+set numCPUs (K) - To set the system variable numCPUs to value K.
+set OS (N) - To load PCT and PIT of OS N where N is a number for the set of PCT and PIT data.

@@ -1,0 +1,17 @@
+
+	i	c	o	i	c	o	i	c	o	c	o	f
+	i	c	o	i	c	o	i	c	c	o	f
+	i	c	o	i	c	o	i	c	o	f
+	i	c	o	i	c	i	c	o	f
+	i	c	o	i	c	c	o	f
+	i	c	o	i	c	o	f
+	i		c	o	i	c	o	c	o	f
+	i	c	o	i	c	c	o	f
+	i	c	o	i	c	o	c	o	f
+	i	c	i	c	o	c	o	f
+	i	c	o	i	c	o	i	c	o	c	o	f
+	i	i	c	o	i	o	f
+	i	c	o	c	o	c	o	f
+	i	c	o	c	o	c	o	f
+	i	c	o	i	c	o	f
+	i	c	o	i	c	c	o	c	o	f
