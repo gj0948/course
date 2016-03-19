@@ -3,7 +3,6 @@ package os.simulator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,63 +11,88 @@ import os.simulator.Process.Priority;
 
 public class OperatingSystem {
     
+    private static final String[] FILES = new String[] {
+        "",
+        "files\\process-info\\scenario_1\\",
+        "files\\process-info\\scenario_2\\",
+        "files\\process-info\\scenario_3\\",
+    };
+    
+    private static final int MIN_CUP_NUM = 1;
+    private static final int MAX_CUP_NUM = 8;
+    
     // strategy pattern
     private ProcessScheduler scheduler;
-    private List<Process> processes;
     private int clock;
     private int numCpus;
     
+    public enum Command {
+        RUN,
+        SHOW_PCT,
+        SHOW_PIT,
+        PS,
+        HELP,
+        KILL,
+        SET_NUM_CPUS,
+        SET_OS,
+    }
+    
     public OperatingSystem(List<Process> processes) {
-        final int DATA_SIZE = 2000;
-        
-        this.processes = new ArrayList<>();
-        
-        Process[] processArray = new Process[processes.size() * DATA_SIZE];
-        int index = 0;
-        for (int i = 0; i < DATA_SIZE; i++) {
-            for (Process process: processes)
-                processArray[index++] = new Process(process);
-        }
-//        Arrays.sort(processArray);
-        for (int i = 0; i < processArray.length; i++) this.processes.add(processArray[i]);
-        
-//        this.processes = processes;
-        
-        scheduler = new PriorityScheduler();
+        scheduler = new PriorityScheduler(processes);
         clock = 0;
         numCpus = 4;
     }
     
     public void start() {
-        long startTimeStamp = System.currentTimeMillis();
+//        for (int i = 0; i < 3; i++) {
+//            System.out.println("run() " + clock);
+//            run();
+//        }
+//        
+        setOs(3);
+        
+        kill(1004);
+        kill(1007);
+        
+        show_pct();
         while (!isTerminated()) {
-//            System.out.println("run()");
+            System.out.println("run() " + clock);
             run();
+//            ps();
+            show_pct();
         }
-        System.out.println(System.currentTimeMillis() - startTimeStamp);
+    }
+    
+    public void setOs(int index) {
+        scheduler.setProcesses(readProcess(FILES[index]));
+    }
+    
+    public boolean kill(int processId) {
+        return scheduler.kill(processId);
+    }
+    
+    public void ps() {
+        for (Process process: scheduler.getNonTerminatedProcesses()) System.out.println(process);
+    }
+    
+    public void show_pct() {
+        for (Process process: scheduler.getProcesses()) System.out.println(process);
     }
     
     public void run() {
-        int threadId = 0;
-        List<Process> nextProcesses = scheduler.nextProcesses(processes, numCpus);
+        clock++;
+        List<Process> nextProcesses = scheduler.nextProcesses(numCpus);
         for (Process process : nextProcesses) {
-            process.run(++threadId);
-            if (process.isTerminated()) processes.remove(process);
+            process.run();
         }
     }
     
     private boolean isTerminated() {
-        for (Process process: processes) if (!process.isTerminated()) return false;
-        return true;
+        return scheduler.isTerminated();
     }
 
     public static void main(String[] args) {
-        List<Process> processes = readProcess("files\\process-info\\scenario_1\\");
-//        for (int i = 0; i < processes.size(); i++) System.out.println(processes.get(i));
-//        Iterator<Process> iterator = processes.iterator();
-//        while (iterable.hasNext()) System.out.println(iterator.next());
-//        for (Process process : processes) System.out.println(process);
-
+        List<Process> processes = readProcess(FILES[1]);
         new OperatingSystem(processes).start();
     }
     
@@ -103,6 +127,7 @@ public class OperatingSystem {
                 
                 processes.add(new Process(
                         id,
+                        threadId,
                         Priority.values()[priority - 1],
                         parseInstructions(pitScanner.nextLine())));
             }
