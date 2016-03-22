@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import os.simulator.Console.Command;
+import os.simulator.Console.CommandName;
 import os.simulator.Process.Instruction;
 import os.simulator.Process.Priority;
 
@@ -26,17 +28,6 @@ public class OperatingSystem {
     private int clock;
     private int numCpus;
     
-    public enum Command {
-        RUN,
-        SHOW_PCT,
-        SHOW_PIT,
-        PS,
-        HELP,
-        KILL,
-        SET_NUM_CPUS,
-        SET_OS,
-    }
-    
     public OperatingSystem(List<Process> processes) {
         scheduler = new PriorityScheduler(processes);
         clock = 0;
@@ -44,31 +35,52 @@ public class OperatingSystem {
     }
     
     public void start() {
-//        for (int i = 0; i < 3; i++) {
-//            System.out.println("run() " + clock);
-//            run();
-//        }
-//        
-        setOs(3);
-        
-        kill(1004);
-        kill(1007);
-        
-        show_pct();
-        while (!isTerminated()) {
-            System.out.println("run() " + clock);
-            run();
-//            ps();
-            show_pct();
+        help();
+        Console console = new Console();
+        while (true) {
+            Command command = console.nextCommand();
+            List<Integer> parameters = command.parameters;
+            if (command.instruction == CommandName.EXIT) break;
+            switch (command.getInstruction()) {
+            case PS:
+                ps();
+                break;
+                
+            case SHOW_PCT:
+                show_pct();
+                break;
+                
+            case SHOW_PIT:
+                break;
+                
+            case KILL:
+                kill(parameters);
+                break;
+                
+            case RUN:
+                if (parameters.size() > 0) run(command.getParameter().get(0));
+                else run();
+                break;
+                
+            case UNKNOWN:
+                System.out.println("invalid command, please re-enter your command!");
+                
+            default:
+                break;
+            }
         }
+    }
+    
+    public void help() {
+        
     }
     
     public void setOs(int index) {
         scheduler.setProcesses(readProcess(FILES[index]));
     }
     
-    public boolean kill(int processId) {
-        return scheduler.kill(processId);
+    public void kill(List<Integer> processIds) {
+        for (Integer processId: processIds) scheduler.kill(processId);
     }
     
     public void ps() {
@@ -80,10 +92,17 @@ public class OperatingSystem {
     }
     
     public void run() {
-        clock++;
-        List<Process> nextProcesses = scheduler.nextProcesses(numCpus);
-        for (Process process : nextProcesses) {
-            process.run();
+        run(1);
+    }
+    
+    public void run(int loopTime) {
+        if (isTerminated()) return;
+        while (loopTime-- > 0) {
+            clock++;
+            List<Process> nextProcesses = scheduler.nextProcesses(numCpus);
+            for (Process process : nextProcesses) {
+                process.run();
+            }
         }
     }
     
