@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import os.simulator.Console.Command;
+import os.simulator.Console.CommandName;
 import os.simulator.Process.Instruction;
 import os.simulator.Process.Priority;
 
@@ -40,6 +42,7 @@ public class OperatingSystem {
     }
     
     public void start() {
+<<<<<<< HEAD
         long startTimeStamp = System.currentTimeMillis();
         while (!isTerminated()) {
 //            System.out.println("run()");
@@ -54,6 +57,76 @@ public class OperatingSystem {
         for (Process process : nextProcesses) {
             process.run(++threadId);
             if (process.isTerminated()) processes.remove(process);
+=======
+        help();
+        Console console = new Console();
+        while (true) {
+            Command command = console.nextCommand();
+            List<Integer> parameters = command.parameters;
+            if (command.instruction == CommandName.EXIT) break;
+            switch (command.getInstruction()) {
+            case PS:
+                ps();
+                break;
+                
+            case SHOW_PCT:
+                show_pct();
+                break;
+                
+            case SHOW_PIT:
+                break;
+                
+            case KILL:
+                kill(parameters);
+                break;
+                
+            case RUN:
+                if (parameters.size() > 0) run(command.getParameter().get(0));
+                else run();
+                break;
+                
+            case UNKNOWN:
+                System.out.println("invalid command, please re-enter your command!");
+                
+            default:
+                break;
+            }
+        }
+    }
+    
+    public void help() {
+        
+    }
+    
+    public void setOs(int index) {
+        scheduler.setProcesses(readProcess(FILES[index]));
+    }
+    
+    public void kill(List<Integer> processIds) {
+        for (Integer processId: processIds) scheduler.kill(processId);
+    }
+    
+    public void ps() {
+        for (Process process: scheduler.getNonTerminatedProcesses()) System.out.println(process);
+    }
+    
+    public void show_pct() {
+        for (Process process: scheduler.getProcesses()) System.out.println(process);
+    }
+    
+    public void run() {
+        run(1);
+    }
+    
+    public void run(int loopTime) {
+        if (isTerminated()) return;
+        while (loopTime-- > 0) {
+            clock++;
+            List<Process> nextProcesses = scheduler.nextProcesses(numCpus);
+            for (Process process : nextProcesses) {
+                process.run();
+            }
+>>>>>>> parent of ab1a4cc... Revert "formart command."
         }
     }
     
