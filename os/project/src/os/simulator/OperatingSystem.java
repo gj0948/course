@@ -153,7 +153,6 @@ public class OperatingSystem {
             
         } catch (FileNotFoundException e) {
             for (StackTraceElement element: e.getStackTrace()) System.err.println(element);
-//            e.printStackTrace();
         } finally {
             if (pctScanner != null) pctScanner.close();
             if (pitScanner != null) pitScanner.close();
