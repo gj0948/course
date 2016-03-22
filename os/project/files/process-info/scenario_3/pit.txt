@@ -1,17 +1,17 @@
 
-	1	2	3	4	5	6	7	finish
-	1	2	3	4	5	6	finish
-	1	2	3	4	5	6	7	8	9	10	finish
-	1	2	3	4	5	6	7	8	9	finish
-	1	2	3	4	5	finish
-	1	2	3	4	5	6	7	8	finish
-	1	2	3	4	5	6	7	8	9	10	11	finish
-	1	2	3	4	5	6	7	8	finish
-	1	2	3	4	5	6	7	finish
-	1	2	3	4	5	finish
-	1	2	3	4	finish
-	1	2	3	4	5	6	finish
-	1	2	3	4	5	6	7	8	9	10	11	finish
-	1	2	3	4	finish
-	1	2	3	4	5	6	7	8	9	10	finish
-	1	2	3	4	5	6	7	8	9	finish
+	i	c	i	c	o	c	o	f
+	i	c	c	c	o	f
+	i	c	f
+	i	i	c	o	f
+	i	o	f
+	i	c	o	i	c	o	f
+	i	c	f
+	i	c	f
+	i	c	o	f
+	i	c	i	c	o	c	o	f
+	i	c	o	f
+	i	i	c	o	i	o	f
+	i	c	o	c	o	c	o	f
+	i	c	f
+	i	c	o	i	c	o	f
+	i	c	o	f

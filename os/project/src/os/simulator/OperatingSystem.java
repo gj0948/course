@@ -3,7 +3,6 @@ package os.simulator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,50 +13,28 @@ import os.simulator.Process.Priority;
 
 public class OperatingSystem {
     
+    private static final String[] FILES = new String[] {
+        "",
+        "files\\process-info\\scenario_1\\",
+        "files\\process-info\\scenario_2\\",
+        "files\\process-info\\scenario_3\\",
+    };
+    
+    private static final int MIN_CUP_NUM = 1;
+    private static final int MAX_CUP_NUM = 8;
+    
     // strategy pattern
     private ProcessScheduler scheduler;
-    private List<Process> processes;
     private int clock;
     private int numCpus;
     
     public OperatingSystem(List<Process> processes) {
-        final int DATA_SIZE = 2000;
-        
-        this.processes = new ArrayList<>();
-        
-        Process[] processArray = new Process[processes.size() * DATA_SIZE];
-        int index = 0;
-        for (int i = 0; i < DATA_SIZE; i++) {
-            for (Process process: processes)
-                processArray[index++] = new Process(process);
-        }
-//        Arrays.sort(processArray);
-        for (int i = 0; i < processArray.length; i++) this.processes.add(processArray[i]);
-        
-//        this.processes = processes;
-        
-        scheduler = new PriorityScheduler();
+        scheduler = new PriorityScheduler(processes);
         clock = 0;
         numCpus = 4;
     }
     
     public void start() {
-<<<<<<< HEAD
-        long startTimeStamp = System.currentTimeMillis();
-        while (!isTerminated()) {
-//            System.out.println("run()");
-            run();
-        }
-        System.out.println(System.currentTimeMillis() - startTimeStamp);
-    }
-    
-    public void run() {
-        int threadId = 0;
-        List<Process> nextProcesses = scheduler.nextProcesses(processes, numCpus);
-        for (Process process : nextProcesses) {
-            process.run(++threadId);
-            if (process.isTerminated()) processes.remove(process);
-=======
         help();
         Console console = new Console();
         while (true) {
@@ -126,22 +103,15 @@ public class OperatingSystem {
             for (Process process : nextProcesses) {
                 process.run();
             }
->>>>>>> parent of ab1a4cc... Revert "formart command."
         }
     }
     
     private boolean isTerminated() {
-        for (Process process: processes) if (!process.isTerminated()) return false;
-        return true;
+        return scheduler.isTerminated();
     }
 
     public static void main(String[] args) {
-        List<Process> processes = readProcess("files\\process-info\\scenario_1\\");
-//        for (int i = 0; i < processes.size(); i++) System.out.println(processes.get(i));
-//        Iterator<Process> iterator = processes.iterator();
-//        while (iterable.hasNext()) System.out.println(iterator.next());
-//        for (Process process : processes) System.out.println(process);
-
+        List<Process> processes = readProcess(FILES[1]);
         new OperatingSystem(processes).start();
     }
     
@@ -176,12 +146,14 @@ public class OperatingSystem {
                 
                 processes.add(new Process(
                         id,
+                        threadId,
                         Priority.values()[priority - 1],
                         parseInstructions(pitScanner.nextLine())));
             }
             
         } catch (FileNotFoundException e) {
             for (StackTraceElement element: e.getStackTrace()) System.err.println(element);
+//            e.printStackTrace();
         } finally {
             if (pctScanner != null) pctScanner.close();
             if (pitScanner != null) pitScanner.close();
